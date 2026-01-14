@@ -884,3 +884,40 @@ header.scrolled h1 {
 #auth-section.hidden {
     display: none;
 }
+
+
+/* Scroll To Top Button */
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #4f46e5; /* Indigo */
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+#scrollToTopBtn:hover {
+  background: #4338ca;
+  transform: scale(1);
+}
+
+/* Visible State */
+#scrollToTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
