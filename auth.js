@@ -2,6 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const authSection = document.getElementById('auth-section');
+    const regcloseauthBtn = document.querySelector('.register-close-auth');
+    const logincloseauthBtn = document.querySelector(".login-colse-auth")
     const resumeSection = document.getElementById('resume-section');
     const landingSection = document.getElementById('landing-section');
     const registerForm = document.getElementById('register');
@@ -13,10 +15,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const topRegisterBtn = document.getElementById('show-register-top');
     const ctaBtn = document.getElementById('cta-create');
     const userNameEl = document.getElementById('user-name');
+    const nameErrorsms = document.getElementById('name-error-message');
+    const emailErrorSms = document.getElementById('email-error-message');
+    const passwordErrorSms = document.getElementById('password-error-message');
+    const downloadResumeBtn = document.getElementById('download-resume');
+    const nameRegex = /^[a-zA-Z\s]{2,}$/;
+    const emailRegx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
 
     // Check for existing session on load
     const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        downloadResumeBtn.classList.add('hidden');
+    
+    }
     if (currentUser && getUserData(currentUser).session) {
+        downloadResumeBtn.classList.remove('hidden');
         showResumeSection();
     } else {
         showLanding();
@@ -56,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentUser = localStorage.getItem('currentUser');
             if (currentUser && getUserData(currentUser)?.session) {
                 showResumeSection();
+
             } else {
                 showAuthSection();
             }
@@ -74,6 +89,44 @@ document.addEventListener('DOMContentLoaded', function () {
         const fullName = document.getElementById('reg-fullname').value.trim();
         const email = document.getElementById('reg-email').value.trim();
         const password = document.getElementById('reg-password').value;
+        console.log("password", password);
+
+        if (!fullName.trim()) {
+            nameErrorsms.textContent = "Name fields are required.";
+            return;
+        }
+        else if (fullName.length < 2) {
+            nameErrorsms.textContent = "Name must be at least 2 characters Long."
+        }
+        if (!nameRegex.test(fullName)) {
+            nameErrorsms.textContent = "Please enter a valid name..";
+            return;
+        }
+        else {
+            nameErrorsms.textContent = "";
+
+        }
+        if (!email.trim()) {
+            emailErrorSms.textContent = "Email is required";
+            return
+        }
+        else if (!emailRegx.test(email)) {
+            emailErrorSms.textContent = "Please enter a valid email";
+            return
+        }
+        else {
+            emailErrorSms.textContent = "";
+        }
+
+        if (!password.trim()) {
+            passwordErrorSms.textContent = "Password is required";
+            return
+        }
+        else if (!passwordRegex.test(password)) {
+            passwordErrorSms.textContent = "Please enter minimu 6 characters, at least one letter and one number.";
+            return
+        }
+        passwordErrorSms.textContent = "";
 
         let isValid = true;
 
@@ -127,6 +180,14 @@ document.addEventListener('DOMContentLoaded', function () {
         registerForm.reset();
         setTimeout(() => showLogin.click(), 1500);
     });
+    regcloseauthBtn.addEventListener("click", function () {
+        authSection.classList.add("hidden");
+        registerForm.reset();
+    })
+    logincloseauthBtn.addEventListener("click", function () {
+        authSection.classList.add("hidden");
+        loginForm.reset();
+    })
 
     // Real-time validation for registration form
     const regEmailInput = document.getElementById('reg-email');
@@ -283,3 +344,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadUserData(); // Load resume and theme data
     }
 });
+
+
+
+
